@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motor | Inventory Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-boxes"></i>
+                    <span>Motor</span>
+                </div>
+                <button class="menu-toggle" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="#">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-box-open"></i>
+                            <span>Inventory</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-truck"></i>
+                            <span>Suppliers</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                    </div>
+                    <div class="user-info">
+                        <span class="username">John Doe</span>
+                        <span class="role">Admin</span>
+                    </div>
+                </div>
+                <button class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Inventory Management</h1>
+                <div class="header-actions">
+                    <div class="notification">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search inventory...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <!-- Summary Cards -->
+                <div class="summary-cards">
+                    <div class="summary-card total-items">
+                        <div class="card-icon">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <div class="card-info">
+                            <span class="card-title">Total Items</span>
+                            <span class="card-value" id="total-items">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card inventory-value">
+                        <div class="card-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="card-info">
+                            <span class="card-title">Inventory Value</span>
+                            <span class="card-value" id="total-value">₱0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card low-stock">
+                        <div class="card-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="card-info">
+                            <span class="card-title">Low Stock</span>
+                            <span class="card-value" id="low-stock">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card categories">
+                        <div class="card-icon">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="card-info">
+                            <span class="card-title">Categories</span>
+                            <span class="card-value" id="total-categories">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory Actions -->
+                <div class="inventory-actions">
+                    <button class="btn btn-primary" id="add-item-btn">
+                        <i class="fas fa-plus"></i> Add Item
+                    </button>
+                    <button class="btn btn-secondary" id="scan-btn">
+                        <i class="fas fa-barcode"></i> Scan Item
+                    </button>
+                    <div class="view-options">
+                        <button class="view-option active" data-view="table">
+                            <i class="fas fa-table"></i>
+                        </button>
+                        <button class="view-option" data-view="grid">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Inventory Table -->
+                <div class="inventory-table-container">
+                    <table id="inventory-table">
+                        <thead>
+                            <tr>
+                                <th class="image-col">Image</th>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Stock</th>
+                                <th>Price (₱)</th>
+                                <th>Value (₱)</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-body">
+                            <!-- Items will be added here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="pagination-btn" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span class="page-info">Page 1 of 1</span>
+                    <button class="pagination-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add/Edit Item Modal -->
+    <div class="modal" id="item-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Add New Item</h2>
+                <span class="close-btn">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="item-form">
+                    <input type="hidden" id="item-id">
+                    
+                    <div class="form-section">
+                        <h3 class="section-title">Product Information</h3>
+                        <div class="form-row">
+                            <div class="form-group image-upload">
+                                <label for="item-image">Product Image</label>
+                                <div class="image-preview" id="image-preview">
+                                    <img id="image-preview-img" src="" alt="Preview">
+                                    <div class="upload-overlay">
+                                        <i class="fas fa-camera"></i>
+                                        <span>Click to upload image</span>
+                                    </div>
+                                    <input type="file" id="item-image" accept="image/*">
+                                </div>
+                            </div>
+                            <div class="form-group-column">
+                                <div class="form-group">
+                                    <label for="item-name">Product Name *</label>
+                                    <input type="text" id="item-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="item-category">Category *</label>
+                                    <div class="select-wrapper">
+                                        <select id="item-category" required>
+                                            <option value="">Select category</option>
+                                            <option value="Electronics">engine components</option>
+                                            <option value="Clothing"> chassis components</option>
+                                            <option value="Food">electrical & control systems</option>
+                                            <option value="Furniture">body & cosmetic parts</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3 class="section-title">Inventory Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="item-sku">SKU</label>
+                                <input type="text" id="item-sku">
+                            </div>
+                            <div class="form-group">
+                                <label for="item-barcode">Barcode</label>
+                                <input type="text" id="item-barcode">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="item-quantity">Quantity *</label>
+                                <div class="quantity-control">
+                                    <button type="button" class="quantity-btn" id="decrease-qty">-</button>
+                                    <input type="number" id="item-quantity" min="0" value="1" required>
+                                    <button type="button" class="quantity-btn" id="increase-qty">+</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="item-price">Price (₱)</label>
+                                <div class="input-with-symbol">
+                                    <span>₱</span>
+                                    <input type="number" id="item-price" min="0" step="0.01" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3 class="section-title">Additional Information</h3>
+                        <div class="form-group">
+                            <label for="item-supplier">Supplier</label>
+                            <div class="select-wrapper">
+                                <select id="item-supplier">
+                                    <option value="">Select supplier</option>
+                                    <option value="Supplier A">Supplier A</option>
+                                    <option value="Supplier B">Supplier B</option>
+                                    <option value="Supplier C">Supplier C</option>
+                                </select>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-description">Description</label>
+                            <textarea id="item-description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" id="cancel-btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scan Modal -->
+    <div class="modal" id="scan-modal">
+        <div class="modal-content scan-modal">
+            <div class="modal-header">
+                <h2>Scan Barcode</h2>
+                <span class="close-btn">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="scan-container">
+                    <div class="scanner-frame">
+                        <video id="scanner-video" playsinline></video>
+                        <div class="scan-overlay">
+                            <div class="scan-box"></div>
+                            <p class="scan-instructions">Align barcode within the frame</p>
+                        </div>
+                    </div>
+                    <div class="scan-result" id="scan-result">
+                        <div class="result-placeholder">
+                            <i class="fas fa-barcode"></i>
+                            <p>Scan result will appear here</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="scan-actions">
+                    <button class="btn btn-outline" id="manual-entry-btn">
+                        <i class="fas fa-keyboard"></i> Manual Entry
+                    </button>
+                    <button class="btn btn-primary" id="use-result-btn" disabled>
+                        <i class="fas fa-check"></i> Use This Code
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
